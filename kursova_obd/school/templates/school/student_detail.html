@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marks</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #c7b3a6;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            margin-top: 40px;
+            margin-left: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 50px;
+        }
+        table {
+            width: 70%;
+            margin: auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            color: #333;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .btn-primary {
+            display: block;
+            width: auto;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #bda298;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #9c9491;
+        }
+        input[type="number"] {
+            width: 50px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 4px;
+            text-align: center;
+        }
+    .back-button{
+
+            padding: 8px 20px;
+            background-color: #756d6a; /* Колір для кнопки */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+        background-color: #5d4037;
+        text-decoration: none;
+        color: #333;
+    }
+    </style>
+<body>
+<div class="col-sm"><a href="{% url 'home' %}" class="col-auto back-button">&#8592; Back home</a></div>
+<h1>Grades for {{ student.full_name_student }}</h1>
+<form method="post">
+  {% csrf_token %}
+  <table>
+    <thead>
+      <tr>
+        <th>Discipline</th>
+        <th>1st Semester Grade</th>
+        <th>2nd Semester Grade</th>
+        <th>Final Grade</th>
+      </tr>
+    </thead>
+    <tbody>
+     {% for grade_entry in grade_list %}
+<tr>
+    <td>{{ grade_entry.id_discipline.discipline_name }}</td>
+    <td><input type="number" name="1_sem_grade_{{ grade_entry.id_discipline.id_discipline }}" value="{{ grade_entry.number_1_sem_grade }}" min="0" max="12"></td>
+    <td><input type="number" name="2_sem_grade_{{ grade_entry.id_discipline.id_discipline }}" value="{{ grade_entry.number_2_sem_grade }}" min="0" max="12"></td>
+    <td><input type="number" name="final_grade_{{ grade_entry.id_discipline.id_discipline }}" value="{{ grade_entry.final_grade }}" min="0" max="12"></td>
+</tr>
+{% endfor %}
+    </tbody>
+  </table>
+  <button type="submit" name="submit" class="btn-primary">Confirm</button>
+</form>
+
+
+
+
+
+</table>
+</body>
+</html>

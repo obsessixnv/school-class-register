@@ -1,0 +1,156 @@
+<!-- у вашому файлі teachers_list.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachers List</title>
+    <!-- Підключення Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #c7b3a6;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            margin-top: 40px;
+            margin-left: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            margin-top: 50px; /* Збільшуємо відступ зверху */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Полупрозорий білий фон контейнера */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Тінь контейнера */
+        }
+        table {
+            background-color: #fff; /* Колір фону таблиці */
+        }
+        th, td {
+            color: #333; /* Колір тексту в таблиці */}
+        .btn-primary {
+            width: 100%; /* Розтягуємо кнопку на всю ширину контейнера */
+
+            background-color: #bda298;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #9c9491;
+        }
+    .back-button{
+
+            padding: 8px 20px;
+            background-color: #756d6a; /* Колір для кнопки */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+        background-color: #5d4037;
+        text-decoration: none;
+        color: #333;
+    }
+    .add-student-button{
+            padding: 8px 20px;
+            background-color: #756d6a; /* Колір для кнопки */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-align: right;
+
+    }
+
+    .add-student-button:hover {
+        background-color: #5d4037;
+        text-decoration: none;
+        color: #333;
+    }
+    </style>
+</head>
+<body>
+ <div class="row">
+    <div class="col-sm"><a href="{% url 'home' %}" class="col-auto back-button">&#8592; Back</a></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+    <div class="col-sm"><a href="{% url 'add_teacher' %}" class="add-student-button col-auto">Add Teacher</a></div>
+  </div>
+    <div class="container">
+        <h1 class="mt-4">Teachers List</h1>
+        <input type="text" id="searchInput" class="form-control mb-4" placeholder="Search...">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Birth Date</th>
+                    <th>Discipline</th>
+                    <th>Class</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="teachersTableBody">
+                {% for teacher in teachers %}
+                    <tr>
+                        <td>{{ teacher.full_name_teacher }}</td>
+                        <td>{{ teacher.teacherinfo.email }}</td>
+                        <td>{{ teacher.teacherinfo.phone_field }}</td>
+                        <td>{{ teacher.teacherinfo.birth_date }}</td>
+                        <td>{{ teacher.teacherinfo.teacher_discipline.discipline_name }}</td>
+                        <td>{{ teacher.teacherinfo.teacher_class.class_name }}</td>
+                        <td>
+                    <form action="{% url 'delete_teacher' teacher.id_teacher %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn btn-primary">Delete</button>
+                    </form>
+                </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function filterTeachers() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const teacherRows = document.getElementById('teachersTableBody').getElementsByTagName('tr');
+
+            for (let i = 0; i < teacherRows.length; i++) {
+                const teacherRow = teacherRows[i];
+                const fullName = teacherRow.cells[0].textContent.toLowerCase();
+                const email = teacherRow.cells[1].textContent.toLowerCase();
+                const phone = teacherRow.cells[2].textContent.toLowerCase();
+                const birthDate = teacherRow.cells[3].textContent.toLowerCase();
+                const discipline = teacherRow.cells[4].textContent.toLowerCase();
+                const class_ = teacherRow.cells[5].textContent.toLowerCase();
+
+                if (fullName.includes(searchQuery) || email.includes(searchQuery) || phone.includes(searchQuery) || birthDate.includes(searchQuery) || discipline.includes(searchQuery) || class_.includes(searchQuery)) {
+                    teacherRow.style.display = '';
+                } else {
+                    teacherRow.style.display = 'none';
+                }
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('keyup', filterTeachers);
+    </script>
+
+    <!-- Підключення Bootstrap JS (необов'язково, якщо ви не використовуєте компоненти JavaScript Bootstrap) -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

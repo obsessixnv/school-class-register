@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Teacher</title>
+</head>
+ <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("https://images.unsplash.com/photo-1604134967494-8a9ed3adea0d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); /* Ваш фоновий зображення */
+            background-size: cover;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            margin-top: 40px;
+            margin-left: 20px;
+        }
+        h1 {
+            text-align: center; /* Вирівнювання заголовку по центру */
+            color: #333; /* Колір тексту заголовку */
+            margin-top: 50px; /* Збільшуємо відступ зверху */
+            }
+        .container {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto; /* Додаємо цей рядок для центрування */
+        }
+        form {
+            padding: 20px; /* Зовнішні відступи форми */
+            border: 1px solid #ccc; /* Рамка форми */
+            border-radius: 10px; /* Округлені кути форми */
+        }
+        table {
+            background-color: #fff; /* Колір фону таблиці */
+        }
+        th, td {
+            color: #333; /* Колір тексту в таблиці */
+        }
+        .btn-primary {
+            width: auto; /* Ширина кнопки залежить від її вмісту */
+            display: block; /* Кнопка стає блочним елементом */
+            margin: 0 auto; /* Вирівнювання кнопки по центру */
+            background-color: #bda298; /* Колір кнопки */
+            color: #fff; /* Колір тексту кнопки */
+            border: none; /* Видаляємо рамку */
+            border-radius: 5px; /* Округлені кути кнопки */
+            cursor: pointer;
+            transition: background-color 0.3s; /* Плавний перехід при наведенні */
+        }
+        .btn-primary:hover {
+            background-color: #9c9491; /* Темніший колір кнопки при наведенні */
+        }
+        input[type="text"],
+        input[type="password"] {
+            background-color: rgba(255, 255, 255, 0);
+            border: none;
+            border-bottom: 1px solid #888888;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            background-color: rgba(255, 255, 255, 0);
+            border: none;
+            border-bottom: 1.4px solid #7c7676;
+            outline: none !important;
+            box-shadow: none;
+        }
+    .back-button{
+
+            padding: 8px 20px;
+            background-color: #756d6a; /* Колір для кнопки */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+        background-color: #5d4037;
+        text-decoration: none;
+        color: #333;
+    }
+    </style>
+<body>
+<div class="col-sm"><a href="{% url 'teachers_list' %}" class="col-auto back-button">&#8592; Back</a></div>
+    <h1>Add Teacher</h1>
+    <form method="post" class="container">
+        {% csrf_token %}
+        {{ teacher_form.as_p }}
+        {{ teacher_info_form.as_p }}
+        <button type="submit" class="btn btn-primary">Add Teacher</button>
+    </form>
+</body>
+</html>

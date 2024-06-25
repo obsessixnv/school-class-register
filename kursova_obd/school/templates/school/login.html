@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+        body {
+            background-image: url("https://images.unsplash.com/photo-1604134967494-8a9ed3adea0d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+            background-size: cover;
+            margin-top: 40px;
+            margin-left: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 100px auto; /* Вертикальне вирівнювання форми */
+            background-color: rgba(224, 224, 224, 0.6); /* Полупрозорий сіро-коричневий фон форми */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Тінь форми */
+            border: 2px solid rgba(177, 177, 177, 0.5); /* Полупрозора сіро-коричнева рамка */
+        }
+        .btn-primary {
+            width: 100%; /* Розтягуємо кнопку на всю ширину контейнера */
+
+            background-color: #756d6a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #9c9491;
+        }
+        :active, :hover, :focus {
+        outline: 0;
+        outline-offset: 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="password"] {
+            background-color: rgba(255, 255, 255, 0);
+            border: none;
+            border-bottom: 1px solid #888888;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            background-color: rgba(255, 255, 255, 0);
+            border: none;
+            border-bottom: 1.4px solid #7c7676;
+            outline: none !important;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+</body>
+</html>

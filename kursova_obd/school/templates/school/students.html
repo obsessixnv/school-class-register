@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #c7b3a6;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            margin-top: 40px;
+            margin-left: 20px;
+        }
+        .colss{
+        color: #c7b3a6;
+        }
+        h1 {
+            text-align: center;
+            visibility: hidden;
+        }
+        .container {
+            margin-top: 50px; /* Збільшуємо відступ зверху */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Полупрозорий білий фон контейнера */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Тінь контейнера */
+        }
+        table {
+            background-color: #fff; /* Колір фону таблиці */
+        }
+        th, td {
+            color: #333; /* Колір тексту в таблиці */}
+        .btn-primary {
+            width: 100%; /* Розтягуємо кнопку на всю ширину контейнера */
+
+            background-color: #bda298;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #9c9491;
+        }
+    .back-button{
+
+            padding: 8px 20px;
+            background-color: #756d6a; /* Колір для кнопки */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+        background-color: #5d4037;
+        text-decoration: none;
+        color: #333;
+    }
+    .add-student-button{
+            padding: 8px 20px;
+            background-color: #756d6a; /* Колір для кнопки */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-align: right;
+
+    }
+
+    .add-student-button:hover {
+        background-color: #5d4037;
+        text-decoration: none;
+        color: #333;
+    }
+    </style>
+</head>
+<body>
+ <div class="row">
+
+    <div class="col-sm"><a href="{% url 'home' %}" class="col-auto back-button">&#8592; Back</a></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+     <div class="col-sm colss"></div>
+    <div class="col-sm"><a href="{% url 'add_student' %}" class="add-student-button col-auto">Add Student</a></div>
+
+  </div>
+<div class="container">
+    <h1>Student List</h1>
+    <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search...">
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Class</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Birth Date</th>
+                <th>Action</th> <!-- Додано новий заголовок для дій -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.full_name_student }}</td>
+                <td>{{ student.id_class.class_name  }}</td>
+                <td>{{ student.studentinfo.email }}</td>
+                <td>{{ student.studentinfo.phone_field }}</td>
+                <td>{{ student.studentinfo.birth_date }}</td>
+                <td>
+                    <form action="{% url 'delete_student' student.id_student %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn btn-primary">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    async function filterStudents() {
+        const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+
+        // Fetching student data from the server
+        const response = await fetch('/students_data'); // Update this URL to match your backend endpoint
+        const students = await response.json();
+
+        const studentTable = document.querySelector('.table-striped');
+        const studentRows = studentTable.getElementsByTagName('tr');
+
+        for (let i = 0; i < studentRows.length; i++) {
+            const studentRow = studentRows[i];
+            if (i === 0) continue; // Skip the header row
+            const studentFullName = studentRow.cells[0].textContent.toLowerCase();
+            const classFullName = studentRow.cells[1].textContent.toLowerCase();
+            // Check if the search query matches either student's full name or class name
+            studentRow.style.display = studentFullName.includes(searchQuery) || classFullName.includes(searchQuery) ? '' : 'none';
+        }
+    }
+
+    document.getElementById('searchInput').addEventListener('keyup', filterStudents);
+    document.getElementById('addStudentForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Зупиняємо стандартну поведінку форми
+
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const phoneNumber = document.getElementById('phoneNumber').value;
+        const birthDate = document.getElementById('birthDate').value;
+        const classId = document.getElementById('class').value;
+
+        const response = await fetch('/add_student', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                full_name_student: fullName,
+                email: email,
+                phone_field: phoneNumber,
+                birth_date: birthDate,
+                id_class: classId
+            })
+        });
+
+        if (response.ok) {
+            alert('Student added successfully!');
+            // Очистіть поля форми або зробіть щось інше після успішного додавання
+        } else {
+            alert('Failed to add student!');
+        }
+    });
+
+</script>
+
+
+
+</body>
+</html>
